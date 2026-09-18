@@ -23,10 +23,9 @@ The runner limits itself to eight model actions per branch and only uploads the 
 
 ## Public repository gate
 
-- Re-run `git check-ignore -v backend/.env` and a secret scan before staging.
-- Stage only intended source, docs, fixture, license, and lock files. Inspect staged names and diff. Never add `backend/.env`, reports, generated artifacts, or real private code.
-- Create a local commit and publish an MIT-licensed public GitHub repository only after GitHub authentication is refreshed. The CLI currently says its stored token is invalid; no remote or public repo has been verified.
-- Verify the public page as a signed-out visitor, including `LICENSE`, setup instructions, and a clean clone/install/test path.
+- Completed September 18, 2026: `https://github.com/jessecalvin08/rulebranch` is public, and the visible `main` branch includes the README and MIT license.
+- Before every later push, re-run `git check-ignore -v backend/.env` and a secret scan; stage only intended source, docs, fixture, license, and lock files. Never add `backend/.env`, reports, generated artifacts, or real private code.
+- Before final submission, verify the public page as a signed-out visitor, including `LICENSE`, setup instructions, and a clean clone/install/test path.
 
 ## Judge demo gate
 

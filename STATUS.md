@@ -23,7 +23,7 @@ The local prototype has a verified live policy-generation call to NVIDIA Nemotro
 | React + FastAPI dashboard | Build passed | Generated drafts are separate from sample traces, edits mark drafts stale, failures are visibly errors, and generated drafts can be tested locally |
 | Regression tests | 51 passed | Offline tests cover generation contracts, malformed output, reserved guards, path and test-runner enforcement, the 18-case matrix, API integration, secret-safe errors, and the new Sandbox runner's synthetic-only safety boundary; 2 dependency deprecation warnings |
 | Sandbox integration | Beta access requested; not live-verified | Official ConTree SDK installed and pinned; runner creates two branches, asks Nemotron for bounded actions, and measures pytest. The real project ID is configured privately, but a read-only check returned `spawn=false`, `list=false`, and all other reported Sandbox permissions false. A Sandbox Beta request was submitted to Nebius on September 18, 2026; no Sandbox was run. |
-| Public repository | Not published | Local commit `4a3f1a5` exists; GitHub CLI token is invalid, and no remote or public repository is verified |
+| Public repository | Published and verified | [github.com/jessecalvin08/rulebranch](https://github.com/jessecalvin08/rulebranch) is public on `main`, with the README and MIT license visible. Private `.env` and local Devpost assets were excluded. |
 | Public demo | Not deployed | Local-only React + FastAPI; no judge-accessible URL has been verified |
 | Demo video | Not recorded/uploaded | Outline prepared in release plan; recording must wait for a truthful working run |
 | Devpost submission | Draft only | Complete near deadline after code, demo, video, and repository are ready |
