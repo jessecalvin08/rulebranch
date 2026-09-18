@@ -114,4 +114,4 @@ For a fresh setup only, copy `backend/.env.example` to a private `backend/.env`,
 
 ## License
 
-RuleBranch is MIT-licensed. The final public GitHub repository must keep the license visible and include a complete setup README for hackathon judging. No public repository or deployed judge demo has been verified yet.
+RuleBranch is MIT-licensed. The public repository keeps the license and setup README visible. The current judge-accessible sample demo is [rulebranch.vercel.app](https://rulebranch.vercel.app/); it is a safe static walkthrough and does not claim a live Sandbox execution.

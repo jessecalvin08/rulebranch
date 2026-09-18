@@ -29,7 +29,9 @@ The runner limits itself to eight model actions per branch and only uploads the 
 
 ## Judge demo gate
 
-A local `localhost` URL is not judge-accessible. The existing React page displays a sample simulation and calls a local FastAPI backend. A frontend-only static deployment would not make the model compiler or sandbox runner work. Choose a host that can run the backend privately with server-side credentials, resource/time limits, and spend controls; put the frontend on a public URL. Verify it as a signed-out visitor. Do not expose the API key to the browser or publish an unrestricted paid `/api/policies/compile` endpoint.
+- Completed September 18, 2026: [rulebranch.vercel.app](https://rulebranch.vercel.app/) is a signed-out, judge-accessible static frontend deployment from the public `main` branch. It was verified to load the sample policy and baseline/repair trace.
+- The hosted demo intentionally makes no Token Factory request, does not receive an API key or environment variable, and labels every shown result as a scripted sample. Live compilation is disabled there; the local private backend retains that integration.
+- This meets the accessible-demo link need for the current product walkthrough, but it is **not** evidence of a live Sandbox coding-agent result. A later production backend must stay server-side, rate-limited, and protected from unrestricted use before live model actions can be exposed publicly.
 
 ## Video outline (maximum three minutes)
 

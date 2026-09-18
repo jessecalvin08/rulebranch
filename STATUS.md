@@ -24,7 +24,7 @@ The local prototype has a verified live policy-generation call to NVIDIA Nemotro
 | Regression tests | 51 passed | Offline tests cover generation contracts, malformed output, reserved guards, path and test-runner enforcement, the 18-case matrix, API integration, secret-safe errors, and the new Sandbox runner's synthetic-only safety boundary; 2 dependency deprecation warnings |
 | Sandbox integration | Beta access requested; not live-verified | Official ConTree SDK installed and pinned; runner creates two branches, asks Nemotron for bounded actions, and measures pytest. The real project ID is configured privately, but a read-only check returned `spawn=false`, `list=false`, and all other reported Sandbox permissions false. A Sandbox Beta request was submitted to Nebius on September 18, 2026; no Sandbox was run. |
 | Public repository | Published and verified | [github.com/jessecalvin08/rulebranch](https://github.com/jessecalvin08/rulebranch) is public on `main`, with the README and MIT license visible. Private `.env` and local Devpost assets were excluded. |
-| Public demo | Not deployed | Local-only React + FastAPI; no judge-accessible URL has been verified |
+| Public demo | Deployed and verified | [rulebranch.vercel.app](https://rulebranch.vercel.app/) serves the frontend as a safe static sample. It makes no Token Factory calls, exposes no credentials, and does not claim a real coding-agent or Sandbox run. |
 | Demo video | Not recorded/uploaded | Outline prepared in release plan; recording must wait for a truthful working run |
 | Devpost submission | Draft only | Complete near deadline after code, demo, video, and repository are ready |
 
@@ -40,7 +40,7 @@ Read [the debugging record](docs/07-compilation-debugging.md) for the confirmed 
 2. Review `backend/fixtures/sample_policy.json` or export/review the latest generated draft, then invoke the CLI's explicit approval gate.
 3. Run and debug the two real Nebius Sandbox branches, then verify the recorded agent actions and actual pytest outcomes.
 4. Add a dashboard review/approval and live-result flow, or provide a reliable judge test build with the CLI evidence clearly labeled.
-5. Publish a secret-scanned public repository and an accessible demo, record/upload the short public video, then complete Devpost submission.
+5. Record/upload the short public video, then complete Devpost submission after the real Sandbox evidence exists.
 6. Confirm the remaining promotional balance before larger live runs; it has not been measured here.
 
 ## Decision log
