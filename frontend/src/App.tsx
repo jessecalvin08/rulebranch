@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { compilePolicyWithNebius, fetchDemoComparison, fetchNebiusConnectionStatus, validatePolicyDraft } from "./api";
+import { compilePolicyWithNebius, fetchDemoComparison, fetchNebiusConnectionStatus, hasLiveApi, validatePolicyDraft } from "./api";
 import { fallbackComparison } from "./demo";
 import type { Decision, DemoComparison, NebiusConnectionStatus, Policy, PolicyValidationResponse } from "./types";
 
@@ -17,7 +17,7 @@ function decisionLabel(decision: Decision): string {
 function App() {
   const [comparison, setComparison] = useState<DemoComparison>(fallbackComparison);
   const [selectedRun, setSelectedRun] = useState<RunKey>("baseline");
-  const [connectionState, setConnectionState] = useState("Built-in sample simulation loaded");
+  const [connectionState, setConnectionState] = useState(hasLiveApi ? "Built-in sample simulation loaded" : "Public demo: built-in sample simulation loaded");
   const [isLoading, setIsLoading] = useState(false);
   const [nebiusStatus, setNebiusStatus] = useState<NebiusConnectionStatus | null>(null);
   const [isCheckingNebius, setIsCheckingNebius] = useState(false);
@@ -49,6 +49,17 @@ function App() {
   }
 
   async function checkNebiusConnection() {
+    if (!hasLiveApi) {
+      setNebiusStatus({
+        configured: false,
+        connected: false,
+        message: "The hosted demo never contacts Token Factory or exposes credentials. Run the local backend to check your own connection.",
+        model_count: 0,
+        nvidia_model_candidates: [],
+        recommended_model: null,
+      });
+      return;
+    }
     setIsCheckingNebius(true);
     try {
       setNebiusStatus(await fetchNebiusConnectionStatus());
@@ -67,6 +78,13 @@ function App() {
   }
 
   async function compilePolicy() {
+    if (!hasLiveApi) {
+      setCompileNotice({
+        kind: "error",
+        text: "Live policy compilation is disabled in the hosted demo. Clone the repository and run the private local backend to use Token Factory.",
+      });
+      return;
+    }
     setIsCompiling(true);
     setCompileNotice(null);
     try {
@@ -109,13 +127,13 @@ function App() {
         </a>
         <div className="topbar-context">
           <span className="pulse" aria-hidden="true" />
-          Local safety workbench
+          {hasLiveApi ? "Local safety workbench" : "Public sample workbench"}
           <span className="divider" aria-hidden="true" />
           <span className="muted">{nebiusStatus?.connected ? "Token Factory connected" : "Nebius connection pending"}</span>
         </div>
         <div className="topbar-actions">
           <button className="quiet-button" type="button" onClick={checkNebiusConnection} disabled={isCheckingNebius}>
-            {isCheckingNebius ? "Checking…" : "Check Token Factory"}
+            {isCheckingNebius ? "Checking…" : hasLiveApi ? "Check Token Factory" : "About this demo"}
           </button>
           <button className="quiet-button" type="button" onClick={loadLocalRun} disabled={isLoading}>
             {isLoading ? "Loading sample…" : "Load sample simulation"}
@@ -128,7 +146,9 @@ function App() {
           <p className="eyebrow">Coding agent safety testing</p>
           <h1 id="page-title">Test the branch before it reaches the repository.</h1>
           <p className="hero-copy">
-            Generate a policy from your instructions and explore a sample of how RuleBranch checks tool calls. This prototype does not yet run a coding agent or execute repository tests.
+            {hasLiveApi
+              ? "Generate a policy from your instructions and explore a sample of how RuleBranch checks tool calls. This prototype does not yet run a coding agent or execute repository tests."
+              : "Explore a safe, scripted sample of how RuleBranch checks tool calls. The public demo makes no Token Factory calls and does not expose any credentials."}
           </p>
         </div>
         <aside className="run-context" aria-label="Current test scenario">
@@ -155,7 +175,7 @@ function App() {
         <div>
           <p className="eyebrow">Token Factory preflight</p>
           <h2>{nebiusStatus?.connected ? "Account connection verified" : "Model selection stays under your control"}</h2>
-          <p>{nebiusStatus?.message ?? "Check the connection to list models without sending an inference prompt or displaying your private key."}</p>
+          <p>{nebiusStatus?.message ?? (hasLiveApi ? "Check the connection to list models without sending an inference prompt or displaying your private key." : "This hosted page is a safe static demo. The repository includes instructions for the private local integration.")}</p>
         </div>
         {nebiusStatus?.connected && (
           <div className="model-result">
@@ -204,10 +224,10 @@ function App() {
             disabled={isCompiling}
             spellCheck="false"
           />
-          <p className="field-hint">Compilation is opt-in: a request is made only after you select the button below.</p>
+          <p className="field-hint">{hasLiveApi ? "Compilation is opt-in: a request is made only after you select the button below." : "Live compilation is intentionally unavailable here. The sample policy and trace below are scripted and clearly labeled."}</p>
           <div className="policy-actions">
-            <button className="compile-button" type="button" onClick={compilePolicy} disabled={isCompiling}>
-              {isCompiling ? "Generating policy…" : "Compile with Token Factory"}
+            <button className="compile-button" type="button" onClick={compilePolicy} disabled={isCompiling || !hasLiveApi} title={hasLiveApi ? undefined : "Available only with the private local backend"}>
+              {isCompiling ? "Generating policy…" : hasLiveApi ? "Compile with Token Factory" : "Live compilation: local only"}
             </button>
             {compiledDraft && (
               <button

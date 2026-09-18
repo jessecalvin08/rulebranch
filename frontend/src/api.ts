@@ -6,10 +6,22 @@ import type {
   PolicyValidationResponse,
 } from "./types";
 
-// The current milestone is intentionally local-only; deployment configuration comes later.
-const API_BASE_URL = "http://127.0.0.1:8000";
+// Leave this unset for the safe, public static demo. Local development uses Vite's
+// /api proxy; a deployed API can be explicitly supplied at build time instead.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "";
+
+export const hasLiveApi = Boolean(API_BASE_URL) ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname === "localhost";
+
+function requireLiveApi(): void {
+  if (!hasLiveApi) {
+    throw new Error("This public demo intentionally uses a scripted fixture. Run RuleBranch locally to use Token Factory or compile a policy.");
+  }
+}
 
 export async function fetchDemoComparison(): Promise<DemoComparison> {
+  requireLiveApi();
   const response = await fetch(`${API_BASE_URL}/api/demo/comparison`);
   if (!response.ok) {
     throw new Error("The local RuleBranch API is unavailable.");
@@ -18,6 +30,7 @@ export async function fetchDemoComparison(): Promise<DemoComparison> {
 }
 
 export async function fetchNebiusConnectionStatus(): Promise<NebiusConnectionStatus> {
+  requireLiveApi();
   const response = await fetch(`${API_BASE_URL}/api/nebius/status`);
   if (!response.ok) {
     throw new Error("RuleBranch could not check Token Factory.");
@@ -26,6 +39,7 @@ export async function fetchNebiusConnectionStatus(): Promise<NebiusConnectionSta
 }
 
 export async function compilePolicyWithNebius(policyText: string): Promise<PolicyCompileResponse> {
+  requireLiveApi();
   const response = await fetch(`${API_BASE_URL}/api/policies/compile`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -39,6 +53,7 @@ export async function compilePolicyWithNebius(policyText: string): Promise<Polic
 }
 
 export async function validatePolicyDraft(policy: Policy): Promise<PolicyValidationResponse> {
+  requireLiveApi();
   const response = await fetch(`${API_BASE_URL}/api/policies/validate`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
