@@ -1,0 +1,32 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+pytest-cache-files-*/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node and frontend builds
+node_modules/
+dist/
+coverage/
+
+# Local databases and reports
+*.db
+*.sqlite
+*.sqlite3
+reports/
+artifacts/
+
+# Editor and operating-system noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
