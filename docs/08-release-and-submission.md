@@ -8,12 +8,12 @@ Updated September 18, 2026. This document distinguishes completed work from rele
 - A search of the candidate public source and documentation found no obvious embedded API key, GitHub token, password, or private-key block. This is a best-effort pattern scan, not a guarantee.
 - The backend suite passed 51 tests. The production-only frontend dependency audit reported zero vulnerabilities on September 16. Re-run both before release.
 - `backend/fixtures/sample_policy.json` passes all 18 synthetic authority checks. These checks execute no coding agent or repository tests.
-- The Nebius SDK accepted a read-only identity probe. With `default-project` as a placeholder, it reported `spawn=false`, `list=false`, and image listing returned HTTP 403. This does **not** establish whether the account lacks entitlement or the placeholder project was simply wrong. Do not infer a successful Sandbox run.
+- The actual Token Factory project ID was copied from Project settings and added to the private, ignored `backend/.env`. A read-only SDK check against that ID still reported `spawn=false`, `list=false`, and all other reported Sandbox permissions false. Sandbox access is not verified; no live Sandbox run was started.
 
 ## Real-run procedure (pending access)
 
-1. In Token Factory, identify the real project ID for the existing `default-project` and confirm Sandbox is enabled. Do not paste an API key into chat or documentation.
-2. Add only `NEBIUS_PROJECT_ID=<actual ID>` to the private, ignored `backend/.env`. The existing `NEBIUS_API_KEY` and `NEBIUS_MODEL` should be retained.
+1. The real project ID is configured privately. The Nebius Sandbox Beta request was submitted on September 18, 2026. Wait for the access notification, then confirm `spawn=true` with a read-only check. Do not paste an API key into chat or documentation.
+2. Repeat the read-only Sandbox permission check and proceed only when `spawn=true`. Retain the existing `NEBIUS_API_KEY`, `NEBIUS_MODEL`, and `NEBIUS_PROJECT_ID` in private `backend/.env`.
 3. Review `backend/fixtures/sample_policy.json`. It permits reading the README, source and tests, writing `src/`, and running exact `pytest`; it denies secret reads, deletion, and network tool calls.
 4. From `backend/`, run `./.venv/Scripts/python.exe -m app.run_sandbox --reviewed-policy fixtures/sample_policy.json --approve --output reports/sandbox-comparison.json`.
 5. Check that the report says `evidence_type=nebius_sandbox_execution`, both branches have a Sandbox image ID, every action was genuinely model-produced, and both final pytest exit codes match the claimed outcome. If the model did not attempt an unsafe action, report that honestly; do not substitute the scripted dashboard trace.

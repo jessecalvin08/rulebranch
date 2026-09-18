@@ -22,21 +22,21 @@ The local prototype has a verified live policy-generation call to NVIDIA Nemotro
 | Generated-draft test | 18/18 passed, synthetic only | The exact 12-rule draft displayed in Jesse's RuleBranch tab was validated through the local API on September 14: all 5 permitted-operation checks and 13 prohibited/invalid-operation checks passed. No browser focus, Token Factory request, file action, command action, or network action was involved |
 | React + FastAPI dashboard | Build passed | Generated drafts are separate from sample traces, edits mark drafts stale, failures are visibly errors, and generated drafts can be tested locally |
 | Regression tests | 51 passed | Offline tests cover generation contracts, malformed output, reserved guards, path and test-runner enforcement, the 18-case matrix, API integration, secret-safe errors, and the new Sandbox runner's synthetic-only safety boundary; 2 dependency deprecation warnings |
-| Sandbox integration | Implemented, not live-verified | Official ConTree SDK installed and pinned; runner creates two branches, asks Nemotron for bounded actions, and measures pytest. Read-only probe returned `spawn=false`, `list=false`; image listing returned HTTP 403 with a placeholder project name. Exact project ID/access remains unresolved. |
-| Public repository | Not published | GitHub CLI token is invalid; source is staged for a local commit, with no remote or public repository yet |
+| Sandbox integration | Beta access requested; not live-verified | Official ConTree SDK installed and pinned; runner creates two branches, asks Nemotron for bounded actions, and measures pytest. The real project ID is configured privately, but a read-only check returned `spawn=false`, `list=false`, and all other reported Sandbox permissions false. A Sandbox Beta request was submitted to Nebius on September 18, 2026; no Sandbox was run. |
+| Public repository | Not published | Local commit `4a3f1a5` exists; GitHub CLI token is invalid, and no remote or public repository is verified |
 | Public demo | Not deployed | Local-only React + FastAPI; no judge-accessible URL has been verified |
 | Demo video | Not recorded/uploaded | Outline prepared in release plan; recording must wait for a truthful working run |
 | Devpost submission | Draft only | Complete near deadline after code, demo, video, and repository are ready |
 
 ## Next action for Jesse
 
-Do not create or share another API key. Confirm the actual Token Factory project ID and Sandbox entitlement for the current account. The CLI has an explicit `--approve` gate, but the dashboard does not yet expose a review/approval flow or a live result. The current generated draft passed **18/18** local synthetic checks; that is not a coding-agent result.
+Do not create or share another API key. The Sandbox Beta request is submitted. Wait for Nebius to notify the project email that access is enabled, then rerun the read-only permission check; the current SDK result is still `spawn=false`. The CLI has an explicit `--approve` gate, but the dashboard does not yet expose a review/approval flow or a live result. The current generated draft passed **18/18** local synthetic checks; that is not a coding-agent result.
 
 Read [the debugging record](docs/07-compilation-debugging.md) for the confirmed causes, verification, limitations, and next steps. The local simulation does not need a Nebius API key.
 
 ## Next implementation milestones
 
-1. Obtain the actual Token Factory project ID and confirm Sandbox execution permissions; the current placeholder-project probe returned 403.
+1. Confirm or obtain Sandbox execution permission for the configured project; the read-only probe using the actual project ID returned `spawn=false`.
 2. Review `backend/fixtures/sample_policy.json` or export/review the latest generated draft, then invoke the CLI's explicit approval gate.
 3. Run and debug the two real Nebius Sandbox branches, then verify the recorded agent actions and actual pytest outcomes.
 4. Add a dashboard review/approval and live-result flow, or provide a reliable judge test build with the CLI evidence clearly labeled.
